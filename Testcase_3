@@ -1,0 +1,68 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class SeleniumExample {
+    public static void main(String[] args) {
+        // Set the path to the ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+
+        // Create a new instance of the ChromeDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Open LambdaTest Selenium Playground
+        driver.get("https://www.lambdatest.com/selenium-playground");
+
+        // Click "Input Form Submit" under "Input Forms"
+        WebElement inputFormSubmitLink = driver.findElement(By.linkText("Input Form Submit"));
+        inputFormSubmitLink.click();
+
+        // Click "Submit" without filling in any information in the form
+        WebElement submitButton = driver.findElement(By.xpath("//button[text()='Submit']"));
+        submitButton.click();
+
+        // Assert "Please fill in the fields" error message
+        WebElement errorMessage = driver.findElement(By.xpath("//div[contains(text(),'Please fill in the fields')]"));
+        String errorMessageText = errorMessage.getText();
+        if (errorMessageText.equals("Please fill in the fields")) {
+            System.out.println("Error message validation passed");
+        } else {
+            System.out.println("Error message validation failed");
+        }
+
+        // Fill in Name, Email, and other fields
+        WebElement nameInput = driver.findElement(By.name("name"));
+        nameInput.sendKeys("John Doe");
+
+        WebElement emailInput = driver.findElement(By.name("email"));
+        emailInput.sendKeys("johndoe@example.com");
+
+        // From the Country drop-down, select "United States" using the text property
+        Select countryDropdown = new Select(driver.findElement(By.name("state")));
+        countryDropdown.selectByVisibleText("United States");
+
+        // Fill all fields
+        WebElement phoneInput = driver.findElement(By.name("phone"));
+        phoneInput.sendKeys("1234567890");
+
+        WebElement addressInput = driver.findElement(By.name("address"));
+        addressInput.sendKeys("123 Street");
+
+        // Click "Submit"
+        submitButton.click();
+
+        // Once submitted, validate the success message
+        WebElement successMessage = driver.findElement(By.xpath("//div[contains(text(),'Thanks for contacting us, we will get back to you shortly.')]"));
+        String successMessageText = successMessage.getText();
+        if (successMessageText.equals("Thanks for contacting us, we will get back to you shortly.")) {
+            System.out.println("Success message validation passed");
+        } else {
+            System.out.println("Success message validation failed");
+        }
+
+        // Close the browser
+        driver.quit();
+    }
+}
